@@ -20,5 +20,25 @@ class CursoController {
                 .json({mensagem: 'Houve um erro ao cadastrar o curso'})
         }
     }
+
+    async listaTodos(request, reponse){
+        try{
+            const cursos = await Curso.findAll({
+                attributes: [
+                    ['id', 'identificador',
+                    'nome',
+                    'duracao'
+                    ]  
+                ],
+                order: [['identificador', 'ASC']]
+            })
+            response.json(cursos)
+
+        }catch(error){
+            response
+            .status(500)
+            .json({mensagem: 'Houve um erro ao listar os cursos'}) 
+        }
+    }
 }
 module.exports = new CursoController()
