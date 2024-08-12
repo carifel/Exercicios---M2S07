@@ -5,6 +5,9 @@ const cursosRoutes = new Router()
 
 cursosRoutes.post('/', CursoController.criar)
 cursosRoutes.get('/',  CursoController.listaTodos)
+cursosRoutes.get('/',  CursoController.listarPorParametro)
+cursosRoutes.put('/:id', CursoController.atualizar)
+cursosRoutes.delete('/:id', CursoController.deletar)
 
 
 module.exports = cursosRoutes

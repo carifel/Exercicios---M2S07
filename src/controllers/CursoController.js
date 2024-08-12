@@ -21,7 +21,7 @@ class CursoController {
         }
     }
 
-    async listaTodos(request, reponse){
+    async listaTodos(request, response){
         try{
             const cursos = await Curso.findAll({
                 attributes: [
@@ -38,6 +38,79 @@ class CursoController {
             response
             .status(500)
             .json({mensagem: 'Houve um erro ao listar os cursos'}) 
+        }
+    }
+
+    async listarPorParametro(request, response) {
+        try {
+            const { nome, duracao } = request.query
+
+            const cursos = await Curso.findAll({
+                where: {
+                    nome: nome,
+                    duracao: duracao
+                }
+            })
+
+            response.json(cursos)
+
+        } catch (error) {
+            response.status(500).json({
+                mensagem: 'Houve um erro ao listar os cursos'
+            })
+        }
+    }
+    async atualizar(request, response) {
+        try {
+            const id = request.params.id
+            const dados = request.body
+            
+            if (!dados.nome || !dados.duracao) {
+                return response
+                    .status(400)
+                    .json({ mensagem: 'O nome e a duracao são obrigatórios' })
+            }
+          
+            const curso = await Curso.findByPk(id)
+
+            if (!curso) {
+                response
+                    .status(404)
+                    .json({ mensagem: 'Não foi encontrado o curso' })
+            }
+
+            curso.nome = dados.nome
+            curso.duracao = dados.duracao
+            await curso.save()
+
+            response.json(curso)
+
+        } catch (error) {
+            response.status(500).json({
+                mensagem: 'Houve um erro ao atualiza o curso'
+            })
+        }
+    }
+
+    async deletar(request, response) {
+        try {
+            const id = request.params.id
+            const curso = await Curso.findByPk(id)
+
+            if (!curso) {
+                response
+                    .status(404)
+                    .json({ mensagem: 'Não foi encontrado o curso' })
+            }
+
+            await curso.destroy()
+
+            response.status(204).json()
+
+        } catch (error) {
+            response.status(500).json({
+                mensagem: 'Houve um erro ao deletar o curso'
+            })
         }
     }
 }
