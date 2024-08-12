@@ -7,6 +7,6 @@ const professoresRoutes = new Router()
 professoresRoutes.post('/', ProfessorController.criar)
 professoresRoutes.get('/',  ProfessorController.listarPorParametro)
 professoresRoutes.put('/:id', ProfessorController.atualizar)
-
+professoresRoutes.delete('/:id', ProfessorController.deletar)
 
 module.exports = professoresRoutes
