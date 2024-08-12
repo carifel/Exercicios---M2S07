@@ -21,7 +21,7 @@ class CursoController {
         }
     }
 
-    async listaTodos(request, reponse){
+    async listaTodos(request, response){
         try{
             const cursos = await Curso.findAll({
                 attributes: [
@@ -38,6 +38,26 @@ class CursoController {
             response
             .status(500)
             .json({mensagem: 'Houve um erro ao listar os cursos'}) 
+        }
+    }
+
+    async listarPorParametro(request, response) {
+        try {
+            const { nome, duracao } = request.query
+
+            const cursos = await Curso.findAll({
+                where: {
+                    nome: nome,
+                    duracao: duracao
+                }
+            })
+
+            response.json(cursos)
+
+        } catch (error) {
+            response.status(500).json({
+                mensagem: 'Houve um erro ao listar os cursos'
+            })
         }
     }
 }
